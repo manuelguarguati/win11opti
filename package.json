@@ -47,7 +47,8 @@
       {
         "provider": "github",
         "owner": "manuelguarguati",
-        "repo": "win11opti"
+        "repo": "win11opti",
+        "releaseType": "release"
       }
     ],
     "win": {
