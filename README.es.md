@@ -6,7 +6,10 @@
 
 Español · [English](README.md)
 
+[![Descargar](https://img.shields.io/github/v/release/manuelguarguati/win11opti?label=Descargar%20Instalador&logo=windows&color=success)](https://github.com/manuelguarguati/win11opti/releases/latest)
 ![Licencia](https://img.shields.io/badge/licencia-MIT-blue) ![Plataforma](https://img.shields.io/badge/plataforma-Windows%2010%2F11-0078d4) ![Estado](https://img.shields.io/badge/estado-alpha-orange)
+
+[⬇️ **Descargar última versión (Instalador para Windows)**](https://github.com/manuelguarguati/win11opti/releases/latest)
 
 </div>
 
