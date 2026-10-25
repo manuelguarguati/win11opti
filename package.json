@@ -1,7 +1,7 @@
 {
   "name": "win11opti",
   "productName": "Win11Opti",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Open-source Windows 11 optimizer: reversible, transparent, timed tweaks. / Optimizador open-source para Windows 11: ajustes reversibles, transparentes y con temporizador.",
   "main": "src/main/main.js",
   "license": "MIT",
