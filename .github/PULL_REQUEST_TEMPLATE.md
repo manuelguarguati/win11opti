@@ -1,0 +1,3 @@
+- [ ] `npm run check` and `npm test` pass / pasan
+- [ ] New tweaks have EN + ES text and a warning if not `safe` / tienen EN + ES y advertencia si no son `safe`
+- [ ] Tested on a real Windows 11 and reverted cleanly / Probado en Windows 11 real y revierte bien

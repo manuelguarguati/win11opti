@@ -1,0 +1,66 @@
+{
+  "name": "win11opti",
+  "productName": "Win11Opti",
+  "version": "0.1.0",
+  "description": "Open-source Windows 11 optimizer: reversible, transparent, timed tweaks. / Optimizador open-source para Windows 11: ajustes reversibles, transparentes y con temporizador.",
+  "main": "src/main/main.js",
+  "license": "MIT",
+  "author": "Manuel Guarguati",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manuelguarguati/win11opti.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/*.test.js",
+    "check": "node --check src/main/main.js && node --check src/main/preload.js && node --check src/renderer/renderer.js && node --check src/renderer/strings.js",
+    "dist": "electron-builder --win nsis --x64",
+    "release": "electron-builder --win nsis --x64 --publish always"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "io.github.manuelguarguati.win11opti",
+    "productName": "Win11Opti",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "engine",
+        "to": "engine"
+      },
+      {
+        "from": "catalog",
+        "to": "catalog"
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "manuelguarguati",
+        "repo": "win11opti"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.png",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "artifactName": "Win11Opti-Setup-${version}.${ext}"
+    }
+  }
+}
