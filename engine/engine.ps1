@@ -21,8 +21,13 @@ $TaskRev  = 'Win11Opti-Revert'
 $TaskWat  = 'Win11Opti-AutoWatcher'
 
 if (-not (Test-Path $Dir)) { New-Item -ItemType Directory -Path $Dir | Out-Null }
-# Only SYSTEM/Admins can write here; users can read.
-& icacls $Dir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' '*S-1-5-32-545:(OI)(CI)RX' | Out-Null
+# Check we are running with admin rights (required to write state). Fail clearly if not.
+$currentPrincipal = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
+if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    throw "Win11Opti engine requires administrator privileges. Please run via the app (UAC prompt) or as Administrator."
+}
+# Grant Admins/SYSTEM full control and allow Users to read (for state polling from renderer).
+& icacls $Dir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' '*S-1-5-32-545:(OI)(CI)RX' 2>&1 | Out-Null
 
 function Log($m) { Add-Content -Path $LogF -Value ("{0} {1}" -f (Get-Date -Format 's'), $m) -Encoding UTF8 }
 function Save($p, $o) { Set-Content -Path $p -Value (ConvertTo-Json -InputObject $o -Depth 8) -Encoding UTF8 }
@@ -188,7 +193,7 @@ switch ($Action) {
                 Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -like "*$app*" } | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
                 $removed += $app
             } catch {
-                Log "Failed removing $app: $($_.Exception.Message)"
+                Log ("Failed removing {0}: {1}" -f $app, $_.Exception.Message)
             }
         }
     }

@@ -23,13 +23,30 @@ const validGame = (g) => typeof g === 'string' && /^[A-Za-z0-9 ._-]{1,64}\.exe$/
 const validAppIds = (arr) => Array.isArray(arr) && arr.length > 0 && arr.every((id) => APP_IDS.has(id));
 
 // Runs the engine elevated (UAC prompt). All arguments are validated before reaching here.
+// We write a tiny launcher script to a temp file to avoid all shell-quoting hazards.
 function runEngine(args) {
   return new Promise((resolve) => {
-    const inner = `-NoProfile -ExecutionPolicy Bypass -File "${ENGINE}" ${args}`.replace(/'/g, "''");
-    const cmd = `$p = Start-Process powershell.exe -Verb RunAs -Wait -PassThru -WindowStyle Hidden -ArgumentList '${inner}'; exit $p.ExitCode`;
-    const c = spawn('powershell.exe', ['-NoProfile', '-Command', cmd], { windowsHide: true });
-    c.on('close', (code) => resolve(code === 0));
-    c.on('error', () => resolve(false));
+    const os = require('os');
+    const tmpScript = path.join(os.tmpdir(), `w11opti_${Date.now()}.ps1`);
+    const scriptContent = `& "${ENGINE}" ${args}\r\nexit $LASTEXITCODE`;
+    try { fs.writeFileSync(tmpScript, scriptContent, 'utf8'); } catch { return resolve(false); }
+
+    const launchCmd = [
+      '-NoProfile', '-ExecutionPolicy', 'Bypass',
+      '-WindowStyle', 'Hidden',
+      '-File', tmpScript,
+    ].map((a) => `'${a.replace(/'/g, "''")}'`).join(', ');
+
+    const elevateCmd = `$p = Start-Process -FilePath powershell.exe -Verb RunAs -Wait -PassThru -ArgumentList ${launchCmd}; if ($p) { exit $p.ExitCode } else { exit 1 }`;
+    const c = spawn('powershell.exe', ['-NoProfile', '-Command', elevateCmd], { windowsHide: true });
+    c.on('close', (code) => {
+      try { fs.unlinkSync(tmpScript); } catch {}
+      resolve(code === 0);
+    });
+    c.on('error', () => {
+      try { fs.unlinkSync(tmpScript); } catch {}
+      resolve(false);
+    });
   });
 }
 
