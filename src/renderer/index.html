@@ -1,38 +1,273 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Win11Opti</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data:">
-<link rel="stylesheet" href="styles.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Win11Opti</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:">
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-<header><div><h1>Win11Opti</h1><p id="tagline"></p></div>
- <select id="lang"><option value="en">English</option><option value="es">Español</option></select></header>
-<main>
- <section id="left">
-  <div id="profiles"></div>
-  <div id="list"></div>
- </section>
- <aside>
-  <div id="vSel">
-   <h3 id="tDur"></h3>
-   <select id="hours"></select>
-   <p class="mu" id="selCount"></p>
-   <button class="btn" id="go"></button>
-   <details id="autoBox"><summary id="tAuto"></summary>
-    <p class="mu" id="autoHelp"></p>
-    <input id="games" placeholder="game1.exe, game2.exe">
-    <button class="btn alt" id="autoOn"></button>
-   </details>
+  <!-- Header Bar -->
+  <header>
+    <div class="brand">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="title-row">
+          <h1>Win11Opti</h1>
+          <span class="version-tag" id="verBadge">v0.1.0</span>
+        </div>
+        <p id="tagline" class="tagline"></p>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" data-tab="tweaks">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <span id="tabTweaks"></span>
+      </button>
+      <button class="nav-tab" data-tab="debloat">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+        <span id="tabDebloat"></span>
+      </button>
+      <button class="nav-tab" data-tab="auto">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="6"/><circle cx="8" cy="12" r="2"/></svg>
+        <span id="tabAuto"></span>
+      </button>
+      <button class="nav-tab" data-tab="tools">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span id="tabTools"></span>
+      </button>
+    </nav>
+
+    <!-- Language Selector -->
+    <div class="lang-picker">
+      <select id="lang">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- Main View Area -->
+  <main>
+    <!-- Left Section / Tab Contents -->
+    <section id="left">
+      <!-- TAB 1: TWEAKS & PROFILES -->
+      <div id="view-tweaks" class="tab-view active">
+        <!-- Quick Profiles -->
+        <div class="section-card">
+          <div class="sec-header">
+            <h4 id="tProfiles"></h4>
+          </div>
+          <div id="profiles" class="profiles-chips"></div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="filter-toolbar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="tweakSearch" placeholder="Search tweaks...">
+            <button class="clear-btn" id="clearTweakSearch" hidden>×</button>
+          </div>
+          <div id="catFilters" class="cat-pills"></div>
+        </div>
+
+        <!-- Quick Actions & Stats -->
+        <div class="action-bar">
+          <div class="quick-btns">
+            <button class="btn sm alt" id="btnSelectSafe"></button>
+            <button class="btn sm alt" id="btnSelectNone"></button>
+          </div>
+          <span class="count-tag" id="tweakCountBadge">0 tweaks</span>
+        </div>
+
+        <!-- Tweaks List -->
+        <div id="list" class="tweaks-container"></div>
+      </div>
+
+      <!-- TAB 2: APP DEBLOATER -->
+      <div id="view-debloat" class="tab-view">
+        <div class="section-card">
+          <div class="sec-header">
+            <div>
+              <h3 id="debloatHeading"></h3>
+              <p id="debloatDesc" class="mu"></p>
+            </div>
+            <button class="btn sm alt" id="btnRefreshApps">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              <span id="txtRefreshApps"></span>
+            </button>
+          </div>
+
+          <div class="filter-toolbar">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="appSearch" placeholder="Search apps...">
+              <button class="clear-btn" id="clearAppSearch" hidden>×</button>
+            </div>
+            <label class="toggle-label">
+              <input type="checkbox" id="chkOnlyInstalled" checked>
+              <span id="txtOnlyInstalled"></span>
+            </label>
+          </div>
+
+          <div class="action-bar">
+            <div class="quick-btns">
+              <button class="btn sm alt" id="btnSelectRecApps"></button>
+              <button class="btn sm alt" id="btnSelectNoneApps"></button>
+            </div>
+            <span class="count-tag" id="appsCountBadge">0 apps selected</span>
+          </div>
+
+          <div id="appsList" class="apps-container"></div>
+
+          <div class="debloat-footer-action">
+            <button class="btn danger" id="btnUninstallApps" disabled></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: AUTO MODE -->
+      <div id="view-auto" class="tab-view">
+        <div class="section-card">
+          <div class="sec-header">
+            <div>
+              <h3 id="autoHeading"></h3>
+              <p id="autoDesc" class="mu"></p>
+            </div>
+          </div>
+          <div class="auto-config-box">
+            <label for="gamesInput" id="lblGames"></label>
+            <input type="text" id="gamesInput" placeholder="valorant.exe, cs2.exe, gta5.exe">
+            <div class="auto-actions">
+              <button class="btn" id="btnAutoStart"></button>
+              <button class="btn alt" id="btnAutoStop" hidden></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: SYSTEM TOOLS -->
+      <div id="view-tools" class="tab-view">
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            </div>
+            <div>
+              <h4 id="tCreateRp"></h4>
+              <p id="descCreateRp" class="mu">Create an instant Windows System Restore Point prior to changing OS configuration.</p>
+            </div>
+            <button class="btn alt" id="btnDoRestorePoint"></button>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </div>
+            <div>
+              <h4 id="tRestartExp"></h4>
+              <p id="descRestartExp" class="mu">Restart Windows Explorer process to immediately reload taskbar, context menus and desktop icons.</p>
+            </div>
+            <button class="btn alt" id="btnDoRestartExp"></button>
+          </div>
+        </div>
+
+        <div class="section-card log-card">
+          <div class="sec-header">
+            <h4 id="tLogHeader"></h4>
+            <button class="btn sm alt" id="btnRefreshLog"></button>
+          </div>
+          <pre id="logOutput" class="log-box"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Section / Sticky Sidebar Panel -->
+    <aside>
+      <!-- Selection State View -->
+      <div id="vSel">
+        <div class="aside-box">
+          <h3 id="tDur"></h3>
+          <div class="select-wrapper">
+            <select id="hours"></select>
+          </div>
+          <div class="selection-summary">
+            <div class="summary-line">
+              <span id="selCount" class="summary-main"></span>
+            </div>
+            <div id="riskBreakdown" class="risk-breakdown"></div>
+          </div>
+          <button class="btn primary-cta" id="go"></button>
+        </div>
+      </div>
+
+      <!-- Active Optimization View -->
+      <div id="vAct" hidden>
+        <div class="aside-box active-box">
+          <div class="status-indicator">
+            <span class="status-dot pulse"></span>
+            <h3 id="aTitle"></h3>
+          </div>
+          <div class="ring">
+            <svg width="150" height="150">
+              <circle cx="75" cy="75" r="66" class="bg"/>
+              <circle id="arc" cx="75" cy="75" r="66" class="fg"/>
+            </svg>
+            <div class="ring-content">
+              <span id="cd"></span>
+              <small id="cdl"></small>
+            </div>
+          </div>
+          <div class="done-list-header">
+            <span>Applied tweaks:</span>
+          </div>
+          <ul id="done" class="applied-list"></ul>
+          <button class="btn danger rs" id="rs"></button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Toast Notification Alert -->
+  <div id="toast" class="toast" hidden></div>
+
+  <!-- Footer -->
+  <footer>
+    <span id="ver"></span>
+    <label class="update-check">
+      <input type="checkbox" id="upd">
+      <span id="tUpd"></span>
+    </label>
+  </footer>
+
+  <!-- Modal Dialog -->
+  <div id="modal" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-icon-warn">⚠️</div>
+        <h2 id="mT"></h2>
+      </div>
+      <p class="modal-intro" id="mIntro"></p>
+      <ul id="mL" class="modal-list"></ul>
+      <label class="chk modal-chk">
+        <input type="checkbox" id="mOk">
+        <span id="mC"></span>
+      </label>
+      <div class="btns">
+        <button class="btn alt" id="mNo"></button>
+        <button class="btn primary" id="mYes" disabled></button>
+      </div>
+    </div>
   </div>
-  <div id="vAct" hidden>
-   <h3 id="aTitle"></h3>
-   <div class="ring"><svg width="150" height="150"><circle cx="75" cy="75" r="66" class="bg"/><circle id="arc" cx="75" cy="75" r="66" class="fg"/></svg><div><span id="cd"></span><small id="cdl"></small></div></div>
-   <ul id="done"></ul>
-   <button class="btn rs" id="rs"></button>
-   <button class="btn alt" id="autoOff" hidden></button>
-  </div>
- </aside>
-</main>
-<footer><span id="ver"></span><label><input type="checkbox" id="upd"> <span id="tUpd"></span></label></footer>
-<div id="modal" hidden><div class="box"><h2 id="mT"></h2><ul id="mL"></ul><label class="chk"><input type="checkbox" id="mOk"> <span id="mC"></span></label>
- <div class="btns"><button class="btn alt" id="mNo"></button><button class="btn" id="mYes" disabled></button></div></div></div>
-<script src="strings.js"></script><script src="renderer.js"></script>
-</body></html>
+
+  <script src="strings.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>

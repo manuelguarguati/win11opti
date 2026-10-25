@@ -1,0 +1,335 @@
+{
+  "schema": 1,
+  "apps": [
+    {
+      "id": "Clipchamp.Clipchamp",
+      "name": "Clipchamp",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Web-based video editor bundled in Windows 11 with background sync.",
+        "es": "Editor de video web incluido en Windows 11 con procesos en segundo plano."
+      }
+    },
+    {
+      "id": "Microsoft.549981C3F5F10",
+      "name": "Cortana",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Deprecated legacy voice assistant app.",
+        "es": "Asistente de voz obsoleto de Microsoft."
+      }
+    },
+    {
+      "id": "Microsoft.BingNews",
+      "name": "Microsoft News",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "MSN News app with continuous news feeds and notification background polling.",
+        "es": "App de noticias MSN con notificaciones y consultas continuas en segundo plano."
+      }
+    },
+    {
+      "id": "Microsoft.BingWeather",
+      "name": "MSN Weather",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Weather forecasts and live tile updates.",
+        "es": "Pronóstico del clima con actualizaciones constantes."
+      }
+    },
+    {
+      "id": "Microsoft.WindowsFeedbackHub",
+      "name": "Feedback Hub",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Sends user feedback, survey popups and diagnostic data to Microsoft.",
+        "es": "Envía encuestas de opinión, sugerencias y datos de diagnóstico a Microsoft."
+      }
+    },
+    {
+      "id": "Microsoft.GetHelp",
+      "name": "Get Help",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Troubleshooting wizard redirecting to Microsoft online support articles.",
+        "es": "Asistente de resolución de problemas con enlaces a soporte web."
+      }
+    },
+    {
+      "id": "Microsoft.Getstarted",
+      "name": "Tips / Welcome",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Windows introductory tips and promotional walkthroughs.",
+        "es": "Consejos introductorios y guías promocionales de Windows."
+      }
+    },
+    {
+      "id": "Microsoft.MicrosoftSolitaireCollection",
+      "name": "Solitaire Collection",
+      "category": "entertainment",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Pre-installed casual card game bundle with video ads.",
+        "es": "Juegos de cartas preinstalados con anuncios publicitarios."
+      }
+    },
+    {
+      "id": "Microsoft.PowerAutomateDesktop",
+      "name": "Power Automate",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Enterprise desktop robotic automation runtime bundled by default.",
+        "es": "Entorno de automatización de flujos empresariales preinstalado."
+      }
+    },
+    {
+      "id": "Microsoft.YourPhone",
+      "name": "Phone Link (Enlace Móvil)",
+      "category": "productivity",
+      "risk": "safe",
+      "recommended": false,
+      "description": {
+        "en": "Syncs calls, SMS and photos with your Android or iPhone device.",
+        "es": "Sincroniza llamadas, mensajes y fotos con tu smartphone Android o iPhone."
+      }
+    },
+    {
+      "id": "Microsoft.MicrosoftStickyNotes",
+      "name": "Sticky Notes",
+      "category": "productivity",
+      "risk": "safe",
+      "recommended": false,
+      "description": {
+        "en": "Desktop sticky notes synced with your Microsoft account.",
+        "es": "Notas rápidas de escritorio sincronizadas con tu cuenta Microsoft."
+      }
+    },
+    {
+      "id": "Microsoft.People",
+      "name": "People",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Legacy Windows contact book integration.",
+        "es": "Libreta de contactos heredada de Windows."
+      }
+    },
+    {
+      "id": "Microsoft.ZuneVideo",
+      "name": "Movies & TV",
+      "category": "entertainment",
+      "risk": "safe",
+      "recommended": false,
+      "description": {
+        "en": "Default media player for video rentals and playback.",
+        "es": "Reproductor predeterminado de películas y programas de TV."
+      }
+    },
+    {
+      "id": "Microsoft.ZuneMusic",
+      "name": "Media Player (Modern)",
+      "category": "entertainment",
+      "risk": "safe",
+      "recommended": false,
+      "description": {
+        "en": "Modern Windows audio and media player app.",
+        "es": "Nuevo reproductor multimedia moderno de Windows."
+      }
+    },
+    {
+      "id": "Microsoft.MixedReality.Portal",
+      "name": "Mixed Reality Portal",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Virtual reality portal for discontinued Windows Mixed Reality devices.",
+        "es": "Portal de realidad virtual para visores discontinuados de Windows."
+      }
+    },
+    {
+      "id": "Microsoft.MSPaint",
+      "name": "Paint 3D",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Discontinued 3D modeling and painting application.",
+        "es": "Aplicación de modelado y pintura 3D discontinuada por Microsoft."
+      }
+    },
+    {
+      "id": "Microsoft.3DBuilder",
+      "name": "3D Builder",
+      "category": "microsoft",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "3D printing utility bundled with Windows.",
+        "es": "Herramienta de impresión 3D incluida con Windows."
+      }
+    },
+    {
+      "id": "Microsoft.MicrosoftOfficeHub",
+      "name": "Microsoft 365 (Office Hub)",
+      "category": "productivity",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Web wrapper promoting Microsoft 365 cloud subscriptions.",
+        "es": "Lanzador web que promociona suscripciones a Microsoft 365."
+      }
+    },
+    {
+      "id": "Microsoft.SkypeApp",
+      "name": "Skype",
+      "category": "communication",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Skype video calling and messaging desktop app.",
+        "es": "App de videollamadas y mensajería Skype."
+      }
+    },
+    {
+      "id": "Microsoft.Todos",
+      "name": "Microsoft To-Do",
+      "category": "productivity",
+      "risk": "safe",
+      "recommended": false,
+      "description": {
+        "en": "Task list and daily planner app.",
+        "es": "Planificador de tareas y listas diarias."
+      }
+    },
+    {
+      "id": "Microsoft.XboxGamingOverlay",
+      "name": "Xbox Game Bar",
+      "category": "gaming",
+      "risk": "moderate",
+      "recommended": false,
+      "description": {
+        "en": "In-game overlay with widgets, audio mixer, and capture (Win+G).",
+        "es": "Superposición en juegos con widgets, mezclador y captura (Win+G)."
+      }
+    },
+    {
+      "id": "Microsoft.XboxApp",
+      "name": "Xbox App",
+      "category": "gaming",
+      "risk": "moderate",
+      "recommended": false,
+      "description": {
+        "en": "PC Game Pass launcher and Xbox social network hub.",
+        "es": "Catálogo de juegos PC Game Pass y comunidad Xbox."
+      }
+    },
+    {
+      "id": "Microsoft.XboxSpeechToTextOverlay",
+      "name": "Xbox Speech-to-Text Overlay",
+      "category": "gaming",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Voice chat transcription module for Xbox Party.",
+        "es": "Módulo de transcripción de chat de voz para Xbox Party."
+      }
+    },
+    {
+      "id": "ByteDance.TikTok",
+      "name": "TikTok",
+      "category": "sponsored",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Pre-installed sponsored TikTok application.",
+        "es": "Acceso patrocinado preinstalado de TikTok."
+      }
+    },
+    {
+      "id": "SpotifyAB.SpotifyMusic",
+      "name": "Spotify",
+      "category": "sponsored",
+      "risk": "safe",
+      "recommended": false,
+      "description": {
+        "en": "Spotify music streaming desktop application.",
+        "es": "Aplicación de streaming de música Spotify."
+      }
+    },
+    {
+      "id": "Facebook.Facebook",
+      "name": "Facebook",
+      "category": "sponsored",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Pre-installed sponsored Facebook app.",
+        "es": "App patrocinada preinstalada de Facebook."
+      }
+    },
+    {
+      "id": "Facebook.Instagram",
+      "name": "Instagram",
+      "category": "sponsored",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Pre-installed sponsored Instagram app.",
+        "es": "App patrocinada preinstalada de Instagram."
+      }
+    },
+    {
+      "id": "AmazonVideo.PrimeVideo",
+      "name": "Amazon Prime Video",
+      "category": "sponsored",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Sponsored Amazon Prime Video streaming app.",
+        "es": "App patrocinada de streaming de Prime Video."
+      }
+    },
+    {
+      "id": "Disney.37853FC22B2CE",
+      "name": "Disney+",
+      "category": "sponsored",
+      "risk": "safe",
+      "recommended": true,
+      "description": {
+        "en": "Sponsored Disney+ streaming desktop client.",
+        "es": "Cliente patrocinado de streaming de Disney+."
+      }
+    },
+    {
+      "id": "4DF9E0F8.Netflix",
+      "name": "Netflix",
+      "category": "sponsored",
+      "risk": "safe",
+      "recommended": false,
+      "description": {
+        "en": "Netflix streaming application.",
+        "es": "Aplicación de streaming de Netflix."
+      }
+    }
+  ]
+}

@@ -1,12 +1,12 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
- Win11Opti engine. Executes ONLY the declarative actions found in catalog/tweaks.json
- (registry, service, process, power). Every change is recorded so it can be undone.
+ Win11Opti engine. Executes ONLY declarative actions from catalog/tweaks.json
+ (registry, service, process, power) and safe app removal.
  Motor de Win11Opti. Ejecuta SOLO acciones declarativas del catálogo y registra todo para poder deshacerlo.
 #>
 param(
-    [Parameter(Mandatory)][ValidateSet('Apply','Revert','SetAuto','ClearAuto')][string]$Action,
-    [string]$Ids = '', [double]$Hours = 0, [string]$Games = '',
+    [Parameter(Mandatory)][ValidateSet('Apply','Revert','SetAuto','ClearAuto','RemoveApps','RestartExplorer','CreateRestorePoint')][string]$Action,
+    [string]$Ids = '', [double]$Hours = 0, [string]$Games = '', [string]$AppIds = '',
     [ValidateSet('manual','auto')][string]$Source = 'manual'
 )
 $ErrorActionPreference = 'Stop'
@@ -21,7 +21,7 @@ $TaskRev  = 'Win11Opti-Revert'
 $TaskWat  = 'Win11Opti-AutoWatcher'
 
 if (-not (Test-Path $Dir)) { New-Item -ItemType Directory -Path $Dir | Out-Null }
-# Only SYSTEM/Admins can write here; users can read. Evita que un proceso sin permisos altere el estado.
+# Only SYSTEM/Admins can write here; users can read.
 & icacls $Dir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' '*S-1-5-32-545:(OI)(CI)RX' | Out-Null
 
 function Log($m) { Add-Content -Path $LogF -Value ("{0} {1}" -f (Get-Date -Format 's'), $m) -Encoding UTF8 }
@@ -32,15 +32,34 @@ function Invoke-Do($a) {
     switch ($a.type) {
         'registry' {
             if ($a.path -notmatch '^(HKCU|HKLM):\\') { throw "Registry path not allowed: $($a.path)" }
+            $keyExisted = Test-Path $a.path
+            $isDefault = ($a.name -eq '(Default)' -or $a.name -eq '@')
             $existed = $false; $old = $null; $oldKind = $null
-            try {
-                $old = (Get-ItemProperty -Path $a.path -Name $a.name -ErrorAction Stop).($a.name)
-                $oldKind = (Get-Item -Path $a.path).GetValueKind($a.name).ToString(); $existed = $true
-            } catch {}
-            if (-not (Test-Path $a.path)) { New-Item -Path $a.path -Force | Out-Null }
+            if ($keyExisted) {
+                try {
+                    if ($isDefault) {
+                        $old = (Get-Item -Path $a.path).GetValue('')
+                        $existed = ($null -ne $old)
+                        $oldKind = 'String'
+                    } else {
+                        $old = (Get-ItemProperty -Path $a.path -Name $a.name -ErrorAction Stop).($a.name)
+                        $oldKind = (Get-Item -Path $a.path).GetValueKind($a.name).ToString()
+                        $existed = $true
+                    }
+                } catch {}
+            } else {
+                New-Item -Path $a.path -Force | Out-Null
+            }
             $val = if ($a.kind -eq 'DWord') { [int]$a.value } else { [string]$a.value }
-            Set-ItemProperty -Path $a.path -Name $a.name -Value $val -Type $a.kind
-            return @{ type='registry'; path=$a.path; name=$a.name; existed=$existed; value=$old; kind=$oldKind }
+            if ($isDefault) {
+                Set-Item -Path $a.path -Value $val
+            } else {
+                Set-ItemProperty -Path $a.path -Name $a.name -Value $val -Type $a.kind
+            }
+            return @{
+                type='registry'; path=$a.path; name=$a.name; existed=$existed;
+                keyExisted=$keyExisted; value=$old; kind=$oldKind; isDefault=$isDefault
+            }
         }
         'service' {
             if ($a.name -notmatch '^[A-Za-z0-9_.-]+$') { throw 'Invalid service name' }
@@ -71,10 +90,25 @@ function Invoke-Do($a) {
 function Invoke-Undo($u) {
     switch ($u.type) {
         'registry' {
+            $isDefault = ($u.isDefault -or $u.name -eq '(Default)' -or $u.name -eq '@')
             if ($u.existed) {
                 $val = if ($u.kind -eq 'DWord') { [int]$u.value } else { [string]$u.value }
-                Set-ItemProperty -Path $u.path -Name $u.name -Value $val -Type $u.kind
-            } else { Remove-ItemProperty -Path $u.path -Name $u.name -ErrorAction SilentlyContinue }
+                if ($isDefault) {
+                    Set-Item -Path $u.path -Value $val
+                } else {
+                    Set-ItemProperty -Path $u.path -Name $u.name -Value $val -Type $u.kind
+                }
+            } else {
+                if ($isDefault) {
+                    if (-not $u.keyExisted) {
+                        Remove-Item -Path $u.path -Recurse -Force -ErrorAction SilentlyContinue
+                    } else {
+                        Set-Item -Path $u.path -Value '' -ErrorAction SilentlyContinue
+                    }
+                } else {
+                    Remove-ItemProperty -Path $u.path -Name $u.name -ErrorAction SilentlyContinue
+                }
+            }
         }
         'service' { if ($u.was -eq 'Running') { Start-Service -Name $u.name -ErrorAction SilentlyContinue } }
         'process' { if ($u.path) { Start-Process -FilePath 'explorer.exe' -ArgumentList ('"{0}"' -f $u.path) } }
@@ -142,5 +176,39 @@ switch ($Action) {
     Remove-Item $AutoF -Force -ErrorAction SilentlyContinue
     $st = Load $StateF; if ($st -and $st.source -eq 'auto') { Revert-All }
     Log 'auto disabled'
+ }
+ 'RemoveApps' {
+    $apps = $AppIds.Split(',') | Where-Object { $_ } | ForEach-Object { $_.Trim() }
+    $removed = @()
+    foreach ($app in $apps) {
+        if ($app -match '^[A-Za-z0-9._-]+$') {
+            Log "Removing appx: $app"
+            try {
+                Get-AppxPackage -Name "*$app*" | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue
+                Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -like "*$app*" } | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
+                $removed += $app
+            } catch {
+                Log "Failed removing $app: $($_.Exception.Message)"
+            }
+        }
+    }
+    Log "Completed debloat apps: $($removed -join ', ')"
+ }
+ 'RestartExplorer' {
+    Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
+    Start-Sleep -Milliseconds 600
+    if (-not (Get-Process -Name explorer -ErrorAction SilentlyContinue)) {
+        Start-Process explorer.exe
+    }
+    Log "Restarted Windows Explorer"
+ }
+ 'CreateRestorePoint' {
+    try {
+        Checkpoint-Computer -Description 'Win11Opti-Manual' -RestorePointType MODIFY_SETTINGS -ErrorAction Stop
+        Log "Manual restore point created."
+    } catch {
+        Log "Manual restore point failed: $($_.Exception.Message)"
+        throw $_
+    }
  }
 }

@@ -1,66 +1,355 @@
 {
-"schema": 1,
-"profiles": {
- "gamer":   {"name":{"en":"Gamer","es":"Gamer"},"tweaks":["power-high","game-mode","pause-update","pause-search","pause-onedrive","silence-toasts","no-game-dvr","no-mouse-accel"]},
- "creator": {"name":{"en":"Video / Creator","es":"Video / Creador"},"tweaks":["power-high","pause-update","pause-search","pause-onedrive"]},
- "focus":   {"name":{"en":"Study / Focus","es":"Estudio / Concentración"},"tweaks":["silence-toasts","pause-update"]},
- "privacy": {"name":{"en":"Privacy","es":"Privacidad"},"tweaks":["no-tips","no-ad-id","no-bg-apps","min-telemetry"]}
-},
-"tweaks": [
-{"id":"power-high","category":"performance","risk":"safe",
- "name":{"en":"High performance power plan","es":"Plan de energía de alto rendimiento"},
- "description":{"en":"Keeps the CPU responsive. Uses more battery on laptops.","es":"Mantiene la CPU lista. Gasta más batería en portátiles."},
- "actions":[{"type":"power","plan":"high"}]},
-{"id":"game-mode","category":"gaming","risk":"safe",
- "name":{"en":"Windows Game Mode","es":"Modo Juego de Windows"},
- "description":{"en":"Asks Windows to prioritise the game over background tasks.","es":"Pide a Windows priorizar el juego sobre tareas en segundo plano."},
- "actions":[{"type":"registry","path":"HKCU:\\Software\\Microsoft\\GameBar","name":"AutoGameModeEnabled","value":1,"kind":"DWord"}]},
-{"id":"no-game-dvr","category":"gaming","risk":"safe",
- "name":{"en":"Turn off background game recording","es":"Apagar la grabación de juegos en segundo plano"},
- "description":{"en":"Stops Xbox Game Bar capture overhead. You can still record manually with other tools.","es":"Quita la carga de captura de Xbox Game Bar. Puedes grabar con otras herramientas."},
- "actions":[{"type":"registry","path":"HKCU:\\System\\GameConfigStore","name":"GameDVR_Enabled","value":0,"kind":"DWord"},{"type":"registry","path":"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR","name":"AppCaptureEnabled","value":0,"kind":"DWord"}]},
-{"id":"no-mouse-accel","category":"gaming","risk":"safe",
- "name":{"en":"Disable mouse acceleration","es":"Desactivar aceleración del mouse"},
- "description":{"en":"1:1 mouse movement for aiming. May need a sign-out to fully apply.","es":"Movimiento 1:1 del mouse para apuntar. Puede requerir cerrar sesión."},
- "actions":[{"type":"registry","path":"HKCU:\\Control Panel\\Mouse","name":"MouseSpeed","value":"0","kind":"String"},{"type":"registry","path":"HKCU:\\Control Panel\\Mouse","name":"MouseThreshold1","value":"0","kind":"String"},{"type":"registry","path":"HKCU:\\Control Panel\\Mouse","name":"MouseThreshold2","value":"0","kind":"String"}]},
-{"id":"pause-update","category":"performance","risk":"safe",
- "name":{"en":"Pause Windows Update","es":"Pausar Windows Update"},
- "description":{"en":"Stops update services so nothing downloads or restarts mid-session.","es":"Detiene los servicios de actualización: sin descargas ni reinicios en plena sesión."},
- "warning":{"en":"Security patches are delayed while active. Use a timer so it switches back on by itself.","es":"Los parches de seguridad se retrasan mientras esté activo. Usa un temporizador para que se reactive solo."},
- "actions":[{"type":"service","name":"wuauserv"},{"type":"service","name":"UsoSvc"}]},
-{"id":"pause-search","category":"performance","risk":"safe",
- "name":{"en":"Pause search indexing","es":"Pausar indexado de búsqueda"},
- "description":{"en":"Frees disk and CPU. Start-menu search is slower until restored.","es":"Libera disco y CPU. La búsqueda del menú inicio va más lenta hasta restaurar."},
- "actions":[{"type":"service","name":"WSearch"}]},
-{"id":"pause-onedrive","category":"performance","risk":"safe",
- "name":{"en":"Pause OneDrive sync","es":"Pausar sincronización de OneDrive"},
- "description":{"en":"Closes OneDrive and starts it again on restore.","es":"Cierra OneDrive y lo vuelve a abrir al restaurar."},
- "actions":[{"type":"process","name":"OneDrive"}]},
-{"id":"silence-toasts","category":"focus","risk":"safe",
- "name":{"en":"Silence notifications","es":"Silenciar notificaciones"},
- "description":{"en":"No pop-ups while you play, study or edit.","es":"Sin ventanas emergentes mientras juegas, estudias o editas."},
- "actions":[{"type":"registry","path":"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications","name":"ToastEnabled","value":0,"kind":"DWord"}]},
-{"id":"no-tips","category":"privacy","risk":"safe",
- "name":{"en":"Remove tips and suggested content","es":"Quitar consejos y contenido sugerido"},
- "description":{"en":"Hides Windows suggestions and promoted apps.","es":"Oculta sugerencias y apps promocionadas de Windows."},
- "actions":[{"type":"registry","path":"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager","name":"SubscribedContent-338389Enabled","value":0,"kind":"DWord"},{"type":"registry","path":"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager","name":"SystemPaneSuggestionsEnabled","value":0,"kind":"DWord"}]},
-{"id":"no-ad-id","category":"privacy","risk":"safe",
- "name":{"en":"Turn off advertising ID","es":"Apagar el ID de publicidad"},
- "description":{"en":"Apps can no longer use a per-user ad profile.","es":"Las apps ya no pueden usar un perfil publicitario."},
- "actions":[{"type":"registry","path":"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo","name":"Enabled","value":0,"kind":"DWord"}]},
-{"id":"no-bg-apps","category":"privacy","risk":"moderate",
- "name":{"en":"Block Store apps in background","es":"Bloquear apps de la Tienda en segundo plano"},
- "description":{"en":"Saves RAM and data.","es":"Ahorra RAM y datos."},
- "warning":{"en":"Some Store apps will not refresh live tiles or notifications until opened.","es":"Algunas apps de la Tienda no actualizarán mosaicos ni notificaciones hasta que las abras."},
- "actions":[{"type":"registry","path":"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications","name":"GlobalUserDisabled","value":1,"kind":"DWord"}]},
-{"id":"min-telemetry","category":"privacy","risk":"moderate",
- "name":{"en":"Minimum diagnostic data","es":"Datos de diagnóstico al mínimo"},
- "description":{"en":"Sets the telemetry policy to the lowest level your edition allows.","es":"Pone la telemetría en el nivel más bajo que permita tu edición."},
- "warning":{"en":"Changes a system policy (HKLM). Some enterprise or Insider features may stop working.","es":"Cambia una política del sistema (HKLM). Algunas funciones empresariales o Insider pueden dejar de funcionar."},
- "actions":[{"type":"registry","path":"HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection","name":"AllowTelemetry","value":0,"kind":"DWord"}]},
-{"id":"pause-sysmain","category":"performance","risk":"advanced",
- "name":{"en":"Pause SysMain (Superfetch)","es":"Pausar SysMain (Superfetch)"},
- "description":{"en":"Stops preloading apps into RAM. Can help on low-RAM PCs.","es":"Deja de precargar apps en RAM. Puede ayudar en PCs con poca RAM."},
- "warning":{"en":"On HDD drives apps may open slower. A restore point is created first.","es":"En discos HDD las apps pueden abrir más lento. Antes se crea un punto de restauración."},
- "actions":[{"type":"service","name":"SysMain"}]}
-]}
+  "schema": 1,
+  "profiles": {
+    "gamer": {
+      "name": { "en": "Gamer", "es": "Gamer" },
+      "tweaks": ["power-high", "game-mode", "pause-update", "pause-search", "pause-onedrive", "silence-toasts", "no-game-dvr", "no-mouse-accel", "disable-sticky-keys", "no-delivery-opt"]
+    },
+    "creator": {
+      "name": { "en": "Video / Creator", "es": "Video / Creador" },
+      "tweaks": ["power-high", "pause-update", "pause-search", "pause-onedrive", "no-delivery-opt", "classic-context-menu"]
+    },
+    "focus": {
+      "name": { "en": "Study / Focus", "es": "Estudio / Concentración" },
+      "tweaks": ["silence-toasts", "pause-update", "hide-start-recommended"]
+    },
+    "privacy": {
+      "name": { "en": "Maximum Privacy", "es": "Privacidad Máxima" },
+      "tweaks": ["no-tips", "no-ad-id", "no-bg-apps", "min-telemetry", "disable-copilot", "disable-recall", "no-bing-search", "no-diagnostic-service", "no-silent-apps", "no-activity-history", "no-lockscreen-tips"]
+    },
+    "debloat": {
+      "name": { "en": "Clean & Debloated", "es": "Limpio y Optimizado" },
+      "tweaks": ["disable-copilot", "disable-recall", "classic-context-menu", "show-file-extensions", "explorer-this-pc", "hide-taskview", "hide-chat-icon", "enable-end-task", "no-bing-search", "no-tips", "no-ad-id", "no-silent-apps", "no-delivery-opt"]
+    }
+  },
+  "tweaks": [
+    {
+      "id": "power-high",
+      "category": "performance",
+      "risk": "safe",
+      "name": { "en": "High performance power plan", "es": "Plan de energía de alto rendimiento" },
+      "description": { "en": "Keeps the CPU responsive. Uses more battery on laptops.", "es": "Mantiene la CPU lista. Gasta más batería en portátiles." },
+      "actions": [{ "type": "power", "plan": "high" }]
+    },
+    {
+      "id": "game-mode",
+      "category": "gaming",
+      "risk": "safe",
+      "name": { "en": "Windows Game Mode", "es": "Modo Juego de Windows" },
+      "description": { "en": "Asks Windows to prioritise the game over background tasks.", "es": "Pide a Windows priorizar el juego sobre tareas en segundo plano." },
+      "actions": [{ "type": "registry", "path": "HKCU:\\Software\\Microsoft\\GameBar", "name": "AutoGameModeEnabled", "value": 1, "kind": "DWord" }]
+    },
+    {
+      "id": "no-game-dvr",
+      "category": "gaming",
+      "risk": "safe",
+      "name": { "en": "Turn off background game recording", "es": "Apagar grabación de juegos en segundo plano" },
+      "description": { "en": "Stops Xbox Game Bar capture overhead. You can still record manually with other tools.", "es": "Quita la carga de captura de Xbox Game Bar. Puedes grabar con otras herramientas." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\System\\GameConfigStore", "name": "GameDVR_Enabled", "value": 0, "kind": "DWord" },
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR", "name": "AppCaptureEnabled", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "no-mouse-accel",
+      "category": "gaming",
+      "risk": "safe",
+      "name": { "en": "Disable mouse acceleration", "es": "Desactivar aceleración del mouse" },
+      "description": { "en": "1:1 mouse movement for aiming. May need a sign-out to fully apply.", "es": "Movimiento 1:1 del mouse para apuntar. Puede requerir cerrar sesión." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Control Panel\\Mouse", "name": "MouseSpeed", "value": "0", "kind": "String" },
+        { "type": "registry", "path": "HKCU:\\Control Panel\\Mouse", "name": "MouseThreshold1", "value": "0", "kind": "String" },
+        { "type": "registry", "path": "HKCU:\\Control Panel\\Mouse", "name": "MouseThreshold2", "value": "0", "kind": "String" }
+      ]
+    },
+    {
+      "id": "disable-sticky-keys",
+      "category": "gaming",
+      "risk": "safe",
+      "name": { "en": "Disable Sticky Keys (5x Shift)", "es": "Desactivar aviso de Teclas Especiales (5x Shift)" },
+      "description": { "en": "Prevents the Sticky Keys dialog when pressing Shift repeatedly during games.", "es": "Evita el aviso de teclas especiales al pulsar la tecla Shift repetidamente en juegos." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Control Panel\\Accessibility\\StickyKeys", "name": "Flags", "value": "506", "kind": "String" }
+      ]
+    },
+    {
+      "id": "pause-update",
+      "category": "performance",
+      "risk": "safe",
+      "name": { "en": "Pause Windows Update", "es": "Pausar Windows Update" },
+      "description": { "en": "Stops update services so nothing downloads or restarts mid-session.", "es": "Detiene los servicios de actualización: sin descargas ni reinicios en plena sesión." },
+      "warning": { "en": "Security patches are delayed while active. Use a timer so it switches back on by itself.", "es": "Los parches de seguridad se retrasan mientras esté activo. Usa un temporizador para que se reactive solo." },
+      "actions": [
+        { "type": "service", "name": "wuauserv" },
+        { "type": "service", "name": "UsoSvc" }
+      ]
+    },
+    {
+      "id": "pause-search",
+      "category": "performance",
+      "risk": "safe",
+      "name": { "en": "Pause search indexing", "es": "Pausar indexado de búsqueda" },
+      "description": { "en": "Frees disk and CPU. Start-menu search is slower until restored.", "es": "Libera disco y CPU. La búsqueda del menú inicio va más lenta hasta restaurar." },
+      "actions": [{ "type": "service", "name": "WSearch" }]
+    },
+    {
+      "id": "pause-onedrive",
+      "category": "performance",
+      "risk": "safe",
+      "name": { "en": "Pause OneDrive sync", "es": "Pausar sincronización de OneDrive" },
+      "description": { "en": "Closes OneDrive and starts it again on restore.", "es": "Cierra OneDrive y lo vuelve a abrir al restaurar." },
+      "actions": [{ "type": "process", "name": "OneDrive" }]
+    },
+    {
+      "id": "no-delivery-opt",
+      "category": "performance",
+      "risk": "safe",
+      "name": { "en": "Disable Delivery Optimization P2P", "es": "Desactivar Optimización de distribución P2P" },
+      "description": { "en": "Stops Windows Update from uploading bandwidth-heavy packages to other PCs.", "es": "Evita que Windows Update suba paquetes a otros equipos en tu red o internet." },
+      "actions": [
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization", "name": "DODownloadMode", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "disable-fast-startup",
+      "category": "performance",
+      "risk": "moderate",
+      "name": { "en": "Disable Fast Startup", "es": "Desactivar Inicio rápido" },
+      "description": { "en": "Ensures completely clean shutdowns and prevents accumulated memory and driver leaks.", "es": "Garantiza apagados completamente limpios y evita fugas acumuladas de controladores y RAM." },
+      "warning": { "en": "Cold boot on older mechanical HDDs may take slightly longer. Recommended for SSDs.", "es": "El arranque en frío en discos mecánicos viejos puede demorar un poco más. Recomendado en SSDs." },
+      "actions": [
+        { "type": "registry", "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power", "name": "HiberbootEnabled", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "pause-sysmain",
+      "category": "performance",
+      "risk": "advanced",
+      "name": { "en": "Pause SysMain (Superfetch)", "es": "Pausar SysMain (Superfetch)" },
+      "description": { "en": "Stops preloading apps into RAM. Can help on low-RAM PCs.", "es": "Deja de precargar apps en RAM. Puede ayudar en PCs con poca RAM." },
+      "warning": { "en": "On HDD drives apps may open slower. A restore point is created first.", "es": "En discos HDD las apps pueden abrir más lento. Antes se crea un punto de restauración." },
+      "actions": [{ "type": "service", "name": "SysMain" }]
+    },
+    {
+      "id": "silence-toasts",
+      "category": "focus",
+      "risk": "safe",
+      "name": { "en": "Silence notifications", "es": "Silenciar notificaciones" },
+      "description": { "en": "No pop-ups while you play, study or edit.", "es": "Sin ventanas emergentes mientras juegas, estudias o editas." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications", "name": "ToastEnabled", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "no-tips",
+      "category": "privacy",
+      "risk": "safe",
+      "name": { "en": "Remove tips and suggested content", "es": "Quitar consejos y sugerencias de Windows" },
+      "description": { "en": "Hides Windows suggestions and promoted apps.", "es": "Oculta sugerencias y apps promocionadas de Windows." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", "name": "SubscribedContent-338389Enabled", "value": 0, "kind": "DWord" },
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", "name": "SystemPaneSuggestionsEnabled", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "no-ad-id",
+      "category": "privacy",
+      "risk": "safe",
+      "name": { "en": "Turn off advertising ID", "es": "Apagar el ID de publicidad" },
+      "description": { "en": "Apps can no longer use a per-user ad profile.", "es": "Las apps ya no pueden usar un perfil publicitario personalizado." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo", "name": "Enabled", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "no-bing-search",
+      "category": "privacy",
+      "risk": "safe",
+      "name": { "en": "Disable Bing in Start Menu search", "es": "Desactivar Bing en la búsqueda del menú Inicio" },
+      "description": { "en": "Searches only local files and apps without web query lag or web recommendations.", "es": "Busca solo archivos y apps locales, sin retrasos por consultas web ni recomendaciones." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\Explorer", "name": "DisableSearchBoxSuggestions", "value": 1, "kind": "DWord" },
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "name": "AllowCortana", "value": 0, "kind": "DWord" },
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "name": "CortanaConsent", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "no-diagnostic-service",
+      "category": "privacy",
+      "risk": "safe",
+      "name": { "en": "Disable Diagnostic Tracking (DiagTrack)", "es": "Desactivar servicio de telemetría (DiagTrack)" },
+      "description": { "en": "Stops Connected User Experiences and Telemetry background service.", "es": "Detiene el servicio en segundo plano de telemetría y diagnóstico de Windows." },
+      "actions": [{ "type": "service", "name": "DiagTrack" }]
+    },
+    {
+      "id": "no-silent-apps",
+      "category": "privacy",
+      "risk": "safe",
+      "name": { "en": "Prevent silent Store app installs", "es": "Evitar descarga silenciosa de apps de la Tienda" },
+      "description": { "en": "Stops Windows from auto-installing suggested Store apps (games, promo apps).", "es": "Evita que Windows instale automáticamente apps sugeridas de la Tienda de fondo." },
+      "actions": [
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent", "name": "DisableWindowsConsumerFeatures", "value": 1, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "no-activity-history",
+      "category": "privacy",
+      "risk": "safe",
+      "name": { "en": "Disable Activity History tracking", "es": "Desactivar historial de actividad" },
+      "description": { "en": "Prevents Windows from storing and publishing user activities to the cloud.", "es": "Evita que Windows guarde y sincronice el historial de actividades en la nube." },
+      "actions": [
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "PublishUserActivities", "value": 0, "kind": "DWord" },
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "UploadUserActivities", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "no-lockscreen-tips",
+      "category": "privacy",
+      "risk": "safe",
+      "name": { "en": "Disable Lockscreen tips & ads", "es": "Desactivar consejos y anuncios en pantalla de bloqueo" },
+      "description": { "en": "Hides Spotlight trivia, tips and promotions from the lockscreen.", "es": "Oculta datos curiosos, consejos y anuncios en la pantalla de bloqueo." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", "name": "RotatingLockScreenOverlayEnabled", "value": 0, "kind": "DWord" },
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", "name": "SubscribedContent-338387Enabled", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "no-bg-apps",
+      "category": "privacy",
+      "risk": "moderate",
+      "name": { "en": "Block Store apps in background", "es": "Bloquear apps de la Tienda en segundo plano" },
+      "description": { "en": "Saves RAM and data by pausing background Store app cycles.", "es": "Ahorra memoria RAM y datos al pausar ciclos en segundo plano de apps." },
+      "warning": { "en": "Some Store apps will not refresh live tiles or notifications until opened.", "es": "Algunas apps de la Tienda no actualizarán mosaicos ni notificaciones hasta que las abras." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications", "name": "GlobalUserDisabled", "value": 1, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "min-telemetry",
+      "category": "privacy",
+      "risk": "moderate",
+      "name": { "en": "Minimum diagnostic data", "es": "Datos de diagnóstico al mínimo" },
+      "description": { "en": "Sets the telemetry policy to the lowest level your edition allows.", "es": "Pone la telemetría en el nivel más bajo que permita tu edición." },
+      "warning": { "en": "Changes a system policy (HKLM). Some enterprise or Insider features may stop working.", "es": "Cambia una política del sistema (HKLM). Algunas funciones empresariales o Insider pueden dejar de funcionar." },
+      "actions": [
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", "name": "AllowTelemetry", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "disable-copilot",
+      "category": "ai",
+      "risk": "safe",
+      "name": { "en": "Disable Microsoft Copilot", "es": "Desactivar Microsoft Copilot" },
+      "description": { "en": "Removes the Copilot button and disables the Copilot AI background service.", "es": "Quita el botón de Copilot y desactiva el servicio de IA de Copilot en segundo plano." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "ShowCopilotButton", "value": 0, "kind": "DWord" },
+        { "type": "registry", "path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot", "name": "TurnOffWindowsCopilot", "value": 1, "kind": "DWord" },
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot", "name": "TurnOffWindowsCopilot", "value": 1, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "disable-recall",
+      "category": "ai",
+      "risk": "safe",
+      "name": { "en": "Disable Windows Recall & Snapshots", "es": "Desactivar Windows Recall y capturas de IA" },
+      "description": { "en": "Stops continuous screen snapshot capture and AI analysis in Windows 11.", "es": "Detiene la captura continua de capturas de pantalla y el análisis de IA en Windows 11." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI", "name": "DisableAIDataAnalysis", "value": 1, "kind": "DWord" },
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI", "name": "DisableAIDataAnalysis", "value": 1, "kind": "DWord" },
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI", "name": "AllowRecallEnablement", "value": 0, "kind": "DWord" },
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI", "name": "TurnOffSavingSnapshots", "value": 1, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "disable-edge-ai",
+      "category": "ai",
+      "risk": "safe",
+      "name": { "en": "Disable Edge AI & Copilot sidebar", "es": "Desactivar IA y barra de Copilot en Edge" },
+      "description": { "en": "Disables Copilot sidebar, compose assistant and shopping AI in Microsoft Edge.", "es": "Desactiva la barra lateral de Copilot, asistente de redacción y compras por IA en Edge." },
+      "actions": [
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge", "name": "StandaloneHubsSidebarEnabled", "value": 0, "kind": "DWord" },
+        { "type": "registry", "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge", "name": "CopilotCDPPageContext", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "classic-context-menu",
+      "category": "interface",
+      "risk": "safe",
+      "name": { "en": "Classic Windows 10 context menu", "es": "Menú contextual clásico de Windows 10" },
+      "description": { "en": "Restores the full right-click context menu without needing 'Show more options'.", "es": "Muestra el menú contextual completo directamente sin tener que pulsar 'Mostrar más opciones'." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32", "name": "(Default)", "value": "", "kind": "String" }
+      ]
+    },
+    {
+      "id": "show-file-extensions",
+      "category": "interface",
+      "risk": "safe",
+      "name": { "en": "Show file extensions for known types", "es": "Mostrar extensiones de archivos conocidos" },
+      "description": { "en": "Always displays file extensions (.exe, .txt, .pdf, etc.) in File Explorer.", "es": "Muestra siempre las extensiones (.exe, .txt, .pdf, etc.) en el Explorador de archivos." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "HideFileExt", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "show-hidden-files",
+      "category": "interface",
+      "risk": "safe",
+      "name": { "en": "Show hidden files and folders", "es": "Mostrar archivos y carpetas ocultos" },
+      "description": { "en": "Makes hidden system and user files visible in File Explorer.", "es": "Hace visibles los archivos y carpetas ocultos en el Explorador de archivos." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "Hidden", "value": 1, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "explorer-this-pc",
+      "category": "interface",
+      "risk": "safe",
+      "name": { "en": "Open File Explorer to 'This PC'", "es": "Abrir Explorador de archivos en 'Este equipo'" },
+      "description": { "en": "Opens File Explorer directly to drives and devices instead of Home / Quick Access.", "es": "Abre el Explorador de archivos en discos y unidades en lugar de Inicio / Acceso rápido." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "LaunchTo", "value": 1, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "hide-taskview",
+      "category": "interface",
+      "risk": "safe",
+      "name": { "en": "Hide Task View button on taskbar", "es": "Ocultar botón Vista de tareas en barra de tareas" },
+      "description": { "en": "Removes the Task View button to save taskbar space.", "es": "Quita el botón de Vista de tareas para liberar espacio en la barra." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "ShowTaskViewButton", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "hide-chat-icon",
+      "category": "interface",
+      "risk": "safe",
+      "name": { "en": "Hide Chat (Teams) icon on taskbar", "es": "Ocultar icono de Chat (Teams) en barra de tareas" },
+      "description": { "en": "Removes the personal Teams / Chat icon from the Windows 11 taskbar.", "es": "Quita el icono de Chat / Teams personal de la barra de tareas de Windows 11." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "TaskbarMn", "value": 0, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "enable-end-task",
+      "category": "interface",
+      "risk": "safe",
+      "name": { "en": "Enable 'End Task' on taskbar right-click", "es": "Activar 'Finalizar tarea' al hacer clic derecho en la barra" },
+      "description": { "en": "Adds an 'End Task' option to force close frozen apps directly from the taskbar.", "es": "Añade la opción 'Finalizar tarea' para cerrar apps colgadas directo desde la barra." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings", "name": "TaskbarEndTask", "value": 1, "kind": "DWord" }
+      ]
+    },
+    {
+      "id": "hide-start-recommended",
+      "category": "interface",
+      "risk": "safe",
+      "name": { "en": "Hide Recommended section in Start Menu", "es": "Ocultar sección Recomendados en menú Inicio" },
+      "description": { "en": "Hides the recommended files and apps list in Windows 11 Start Menu.", "es": "Oculta la lista de archivos y apps recomendadas en el menú Inicio de Windows 11." },
+      "actions": [
+        { "type": "registry", "path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\Explorer", "name": "HideRecommendedSection", "value": 1, "kind": "DWord" }
+      ]
+    }
+  ]
+}

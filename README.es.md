@@ -24,10 +24,14 @@ La mayoría aplica un montón de cambios sin vuelta atrás. Win11Opti sigue tres
 ## Características
 
 - **Modos con temporizador**: "Gamer por 5 horas". Una tarea programada restaura todo sola, aunque cierres la app o reinicies.
+- **Desinstalador de Bloatware**: Detecta y desinstala limpiamente apps basura y patrocinadas de Windows 11 (Clipchamp, Cortana, Noticias, Clima, TikTok, etc.) con selección recomendada en 1 clic.
+- **Control de IA y Copilot**: Desactiva Windows Copilot, capturas de pantalla de Recall, Click-to-Do y la barra lateral de IA de Edge.
+- **Interfaz y Explorador**: Menú contextual clásico de Windows 10, mostrar extensiones de archivo, abrir Explorador en 'Este equipo', ocultar iconos de Vista de tareas y Chat, y activar 'Finalizar tarea' en la barra.
+- **Herramientas del Sistema**: Creación de Punto de Restauración en 1 clic, reinicio instantáneo del Explorador de Windows y visor de registros en vivo.
 - **Modo automático** *(experimental)*: agrega `juego.exe`; los ajustes se aplican mientras corre y se deshacen al cerrarlo.
-- **Perfiles**: Gamer, Video / Creador, Estudio / Concentración, Privacidad.
+- **Perfiles**: Gamer, Video / Creador, Estudio / Concentración, Privacidad Máxima, Limpio y Optimizado.
 - **Niveles de riesgo**: 🟢 Seguro · 🟡 Moderado · 🔴 Avanzado (crea un punto de restauración antes).
-- **Interfaz bilingüe**: English y Español, cambia cuando quieras.
+- **Interfaz interactiva**: Búsqueda en vivo, filtrado por categorías, switches animados modernos, pestañas y soporte bilingüe (Español / English).
 - **Actualización automática** con GitHub Releases (se puede desactivar).
 
 ## Instalación

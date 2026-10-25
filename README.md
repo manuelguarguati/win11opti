@@ -24,10 +24,14 @@ Most "optimizers" apply a one-way pile of tweaks and hope for the best. Win11Opt
 ## Features
 
 - **Timed modes**: "Gamer for 5 hours". A scheduled task restores everything on its own, even if you close the app or reboot.
+- **App Debloater**: Detects and cleanly uninstalls pre-installed Windows 11 bloatware and sponsored apps (Clipchamp, Cortana, News, Weather, TikTok, etc.) with one-click recommended selections.
+- **AI & Copilot Controls**: Disable Windows Copilot, Recall snapshots, Click-to-Do, and Edge AI sidebars.
+- **Interface & Explorer**: Classic Windows 10 context menu, show file extensions, open Explorer to 'This PC', hide Task View & Chat icons, and enable 'End Task' on taskbar right-click.
+- **System Tools**: 1-click System Restore Point creation, instant Windows Explorer restart, and engine diagnostic log viewer.
 - **Auto mode** *(experimental)*: add `game.exe`; tweaks apply while it runs and are undone when you close it.
-- **Profiles**: Gamer, Video / Creator, Study / Focus, Privacy.
+- **Profiles**: Gamer, Video / Creator, Study / Focus, Maximum Privacy, Clean & Debloated.
 - **Risk levels**: 🟢 Safe · 🟡 Moderate · 🔴 Advanced (creates a restore point first).
-- **Bilingual UI**: English and Español, switch any time.
+- **Interactive UI**: Live search, category filtering, smooth animated toggles, tabs, and bilingual English / Español support.
 - **Auto-update** through GitHub Releases (can be turned off).
 
 ## Install

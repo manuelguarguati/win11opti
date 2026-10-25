@@ -5,9 +5,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const cat = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'catalog', 'tweaks.json'), 'utf8'));
+const appsCat = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'catalog', 'apps.json'), 'utf8'));
 const TYPES = new Set(['registry', 'service', 'process', 'power']);
 const RISKS = new Set(['safe', 'moderate', 'advanced']);
-const CATS = new Set(['performance', 'gaming', 'focus', 'privacy']);
+const CATS = new Set(['performance', 'gaming', 'focus', 'privacy', 'ai', 'interface']);
 
 test('ids are unique and well formed', () => {
   const ids = cat.tweaks.map((t) => t.id);
@@ -17,7 +18,7 @@ test('ids are unique and well formed', () => {
 
 test('every tweak is bilingual and categorised', () => {
   for (const t of cat.tweaks) {
-    assert.ok(CATS.has(t.category), `${t.id}: category`);
+    assert.ok(CATS.has(t.category), `${t.id}: category ${t.category}`);
     assert.ok(RISKS.has(t.risk), `${t.id}: risk`);
     for (const f of ['name', 'description']) { assert.ok(t[f]?.en && t[f]?.es, `${t.id}: ${f} en+es`); }
     if (t.warning) assert.ok(t.warning.en && t.warning.es, `${t.id}: warning en+es`);
@@ -56,4 +57,16 @@ test('UI strings exist in both languages with the same keys', () => {
   const { en, es } = window.STRINGS;
   assert.deepEqual(Object.keys(en).sort(), Object.keys(es).sort());
   assert.deepEqual(Object.keys(en.cat).sort(), Object.keys(es.cat).sort());
+});
+
+test('apps catalog is well formed and bilingual', () => {
+  assert.ok(Array.isArray(appsCat.apps), 'apps list is array');
+  const ids = appsCat.apps.map((a) => a.id);
+  assert.equal(new Set(ids).size, ids.length, 'app ids are unique');
+  for (const a of appsCat.apps) {
+    assert.match(a.id, /^[A-Za-z0-9._-]+$/, `${a.id} valid id`);
+    assert.ok(a.name, `${a.id} has name`);
+    assert.ok(a.description?.en && a.description?.es, `${a.id} bilingual description`);
+    assert.ok(typeof a.recommended === 'boolean', `${a.id} recommended bool`);
+  }
 });
